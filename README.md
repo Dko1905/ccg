@@ -1,1 +1,4 @@
 # ccg
+Collatzconjecture generator.
+
+# **WIP**

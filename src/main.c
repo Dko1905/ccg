@@ -9,7 +9,7 @@ int main(){
 
 	FILE* fptr = fopen(filename, "w");
 
-	generate_to_stream(fptr, 10000);
+	generate_to_stream(fptr, 1000000);
 	fclose(fptr);
 }
 

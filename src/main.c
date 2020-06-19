@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <stdint.h>
 
-typedef long long unsigned int llu;
+typedef uintmax_t llu;
 
 void generate_to_stream(FILE* stream, llu max_number);
 

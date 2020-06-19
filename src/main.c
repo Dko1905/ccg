@@ -38,7 +38,7 @@ int main(int argc, char* argv[]){
 	ERR_CHECK(fptr == NULL, "Failed to open %s", filename);
 
 	generate_to_stream(fptr, maxNumber);
-	ERR_CHECK(fclose(fptr) == 0, "Failed to close %s", filename);
+	ERR_CHECK(fclose(fptr) != 0, "Failed to close %s", filename);
 }
 
 void generate_to_stream(FILE* stream, uintm max_number){
@@ -56,6 +56,6 @@ void generate_to_stream(FILE* stream, uintm max_number){
 			}
 			steps++;
 		}
-		fprintf(stream, "%llu,%llu\n", n, steps);
+		fprintf(stream, "%llu,%llu\n", (unsigned long long)n, (unsigned long long)steps);
 	}
 }

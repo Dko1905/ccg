@@ -83,17 +83,21 @@ int generate_to_stream(FILE* stream, size_t max, size_t buffer_size){
 			i = 0;
 			fwr = fwrite(buffer, sizeof(size_t), buffer_size, stream);
 			if(fwr != buffer_size){
-				return -1;
+				goto error;
 			}
 		}
 	}
 	if(i > 0){
 		fwr = fwrite(buffer, sizeof(size_t), i, stream);
 		if(fwr != i){
-			return -1;
+			goto error;
 		}
 	}
 
 	free(buffer);
 	return 0;
+
+error:
+	free(buffer);
+	return -1;
 }

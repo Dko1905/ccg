@@ -1,18 +1,92 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
+#include <string.h>
 
 int generate_to_stream(FILE* stream, size_t max, size_t buffer_size);
 int convert_to_csv(FILE* input, FILE* output);
 
-void test1();
-void test2();
+void printUsage();
 
-int main(){
-	test1();
-	printf("Generated\n");
-	test2();
+#define CHECK_ARGUMENT_COUNT(min) \
+	if(argc < min){ \
+		fprintf(stderr, "Incorrect usage\n"); \
+		printUsage(); \
+		return 1; \
+	}
+
+#define ERRBUFFERSIZE 255
+#define ERR_CHECK(exp, ...) \
+	if(exp){ \
+		char str[ERRBUFFERSIZE]; \
+		snprintf(str, ERRBUFFERSIZE, __VA_ARGS__); \
+		perror(str); \
+		return errno; \
+	}
+
+int main(int argc, char* argv[]){
+	CHECK_ARGUMENT_COUNT(2);
+	// 1       2           3              4
+	// g - <max size> <output file> (<buffer size>)
+	if(strncmp(argv[1], "g", 1) == 0){
+		CHECK_ARGUMENT_COUNT(3);
+		char* output = argv[3];
+		size_t upper = 0;
+		size_t buffer_size = BUFSIZ;
+		sscanf(argv[2],"%llu", (unsigned long long*)&upper);
+		if(argc > 4){
+			sscanf(argv[4],"%llu", (unsigned long long*)&buffer_size);
+		}
+		if(upper == 0){
+			fprintf(stderr, "Incorrect usage\n");
+			printUsage();
+			return 1;
+		}
+
+		FILE* file = fopen(output, "w");
+		ERR_CHECK(file == NULL, "Failed to open %s", output);
+		
+		if(generate_to_stream(file, upper, buffer_size) != 0){
+			fclose(file);
+			ERR_CHECK(1 == 1, "Failed to generate to stream");
+		}
+		fclose(file);
+		return 0;
+	}
+	else if(strncmp(argv[1], "c", 1) == 0){
+		CHECK_ARGUMENT_COUNT(3);
+		FILE *inputFile, *outputFile;
+		char* input = argv[2];
+		char* output = argv[3];
+
+		inputFile = fopen(input, "r");
+		ERR_CHECK(inputFile == NULL, "Failed to open %s", input);
+		outputFile = fopen(output, "w");
+		if(outputFile == NULL){
+			fclose(inputFile);
+			ERR_CHECK(outputFile == NULL, "Failed to open %s", output);
+		}
+
+		if(convert_to_csv(inputFile, outputFile) != 0){
+			fclose(inputFile);
+			fclose(outputFile);
+			ERR_CHECK(1 == 1, "Failed to convert to csv");
+		}
+
+		fclose(inputFile);
+		fclose(outputFile);
+		return 0;
+	} else{
+		printUsage();
+	}
 
 	return 0;
+}
+
+void printUsage(){
+	printf("Usage:\n");
+	printf("g\tGenerate numbers in binary format\n\tccg g <upper limit> <output binary file> (<buffer size>)\n");
+	printf("c\tConvert from binary to csv format\n\tccg c <binary input file> <csv output file>\n");
 }
 
 void test1(){

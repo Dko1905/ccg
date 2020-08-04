@@ -1,6 +1,8 @@
 # Collatz Conjecture Generator
-This program aims to be one of the fastest to generate **BIG** files, that can hold varius infomation about the algorithm.
-The program currently is only single threaded, but the `new` branch has a multi threaded buffer-less, generator for csv files. But this generator is slower than the single threaded 'raw' generator that is in this branch.
+This program aims to be one of the fastest generators of the Collatz Conjecture. I am not really sure what you want to use it for.
+
+## New branch
+The `new` branch was a WIP branch, where I was trying to make it multithreaded, but after bad results, I stopped working on it.
 
 ## Usage
 Run the program without any arguments to get the usage. Here is the output of running the program without any arguments.
@@ -12,4 +14,5 @@ c	Convert from binary to csv format
 ```
 
 ## License
-MIT
+Nice and free, [MIT](./LICENSE)
+

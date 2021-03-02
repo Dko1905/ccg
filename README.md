@@ -8,9 +8,9 @@ The `new` branch was a WIP branch, where I was trying to make it multithreaded, 
 Run the program without any arguments to get the usage. Here is the output of running the program without any arguments.
 ```sh
 g	Generate numbers in binary format
-	ccg g <upper limit> <output binary file> (<buffer size>)
+	ccg g <output binary file> <start> <stop> (<buffer size>)
 c	Convert from binary to csv format
-	ccg c <binary input file> <csv output file>
+	ccg c <binary input file> <csv output file> (<buffer size>)
 ```
 
 ## License
